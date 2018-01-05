@@ -31,6 +31,12 @@ void number8(void);
 void number9(void);
 void number0(void);
 void numberDisplay(uint8_t countIndex);
+void leftLED(void);
+void rightLED(void);
+
+//Global Variables by Peter//
+bool displayToggle = 0;
+bool displayChangeValid = 0;
 
 //-----------------------------------------------------------------------------
 // SiLabs_Startup() Routine
@@ -62,18 +68,22 @@ SI_SBIT(LEDG, SFR_P0, 7);
 
 SI_SBIT(LED0, SFR_P1, 1);
 
+SI_SBIT(LEDR, SFR_P1, 2);
+SI_SBIT(LEDL, SFR_P0, 0);
+
 //-----------------------------------------------------------------------------
 // main() Routine
 // ----------------------------------------------------------------------------
 int main(void) {
-	uint16_t numberCount = 0;
+	int16_t numberCount = 0;
 	uint16_t pressCount = 0;
 	bool pressValid = 0;
 
 	// Call hardware initialization routine
 	enter_DefaultMode_from_RESET();
 
-	//PCA0CPH0 = 0x0F;
+	/*PCA0CPH0 = 0x02;
+	 PCA0CPH1 = 0x50;*/
 
 	while (1) {
 // $[Generated Run-time code]
@@ -91,36 +101,36 @@ int main(void) {
 
 // [Generated Run-time code]$
 
-		if (CSLIB_isSensorDebounceActive(0) && pressValid == 0) {
-			numberCount++;
+		/*if (CSLIB_isSensorDebounceActive(0) && pressValid == 0) {
+		 numberCount++;
 
-			if (numberCount > 9) {
-				numberCount = 9;
-			}
+		 if (numberCount > 9) {
+		 numberCount = 9;
+		 }
 
-			LED0 = 1;
-			pressValid = 1;
-			pressCount = 0;
-		} else if (CSLIB_isSensorDebounceActive(1) && pressValid == 0) {
-			numberCount--;
+		 LED0 = 1;
+		 pressValid = 1;
+		 pressCount = 0;
+		 } else if (CSLIB_isSensorDebounceActive(1) && pressValid == 0) {
+		 numberCount--;
 
-			if (numberCount < 0) {
-				numberCount = 0;
-			}
+		 if (numberCount < 0) {
+		 numberCount = 0;
+		 }
 
-			LED0 = 1;
-			pressValid = 1;
-			pressCount = 0;
-		} else {
-			LED0 = 0;
-			pressCount++;
+		 LED0 = 1;
+		 pressValid = 1;
+		 pressCount = 0;
+		 } else {
+		 LED0 = 0;
+		 pressCount++;
 
-			if (pressCount > touchCounter) {
-				pressCount = 0;
-				pressValid = 0;
-			}
-		}
-
+		 if (pressCount > touchCounter) {
+		 pressCount = 0;
+		 pressValid = 0;
+		 }
+		 }*/
+		numberCount = 9;
 		numberDisplay(numberCount);
 
 	}
@@ -226,36 +236,130 @@ void number0(void) {
 	LEDG = 0;
 }
 
+void leftLED(void) {
+	LEDR = 0;
+	LEDL = 1;
+	/*PCA0CPH0 = 0x00;
+	 PCA0CPH1 = 0xFF;*/
+}
+
+void rightLED(void) {
+	LEDR = 1;
+	LEDL = 0;
+	/*PCA0CPH0 = 0xFF;
+	 PCA0CPH1 = 0x00;*/
+}
+
 void numberDisplay(uint8_t countIndex) {
 	switch (countIndex) {
 	case 1:
-		number1();
+		if (displayToggle == 1) {
+			number0();
+			leftLED();
+			displayChangeValid = 0;
+		} else if (displayToggle == 0) {
+			number1();
+			rightLED();
+			displayChangeValid = 0;
+		}
 		break;
 	case 2:
-		number2();
+		if (displayToggle == 1) {
+			number0();
+			leftLED();
+			displayChangeValid = 0;
+		} else if (displayToggle == 0) {
+			number2();
+			rightLED();
+			displayChangeValid = 0;
+		}
 		break;
 	case 3:
-		number3();
+		if (displayToggle == 1) {
+			number0();
+			leftLED();
+			displayChangeValid = 0;
+		} else if (displayToggle == 0) {
+			number3();
+			rightLED();
+			displayChangeValid = 0;
+		}
 		break;
 	case 4:
-		number4();
+		if (displayToggle == 1) {
+			number0();
+			leftLED();
+			displayChangeValid = 0;
+		} else if (displayToggle == 0) {
+			number4();
+			rightLED();
+			displayChangeValid = 0;
+		}
 		break;
 	case 5:
-		number5();
+		if (displayToggle == 1) {
+			number0();
+			leftLED();
+			displayChangeValid = 0;
+		} else if (displayToggle == 0) {
+			number5();
+			rightLED();
+			displayChangeValid = 0;
+		}
 		break;
 	case 6:
-		number6();
+		if (displayToggle == 1) {
+			number0();
+			leftLED();
+			displayChangeValid = 0;
+		} else if (displayToggle == 0) {
+			number6();
+			rightLED();
+			displayChangeValid = 0;
+		}
 		break;
 	case 7:
-		number7();
+		if (displayToggle == 1) {
+			number0();
+			leftLED();
+			displayChangeValid = 0;
+		} else if (displayToggle == 0) {
+			number7();
+			rightLED();
+			displayChangeValid = 0;
+		}
 		break;
 	case 8:
-		number8();
+		if (displayToggle == 1) {
+			number0();
+			leftLED();
+			displayChangeValid = 0;
+		} else if (displayToggle == 0) {
+			number8();
+			rightLED();
+			displayChangeValid = 0;
+		}
 		break;
 	case 9:
-		number9();
+		if (displayToggle == 1) {
+			number0();
+			leftLED();
+			displayChangeValid = 0;
+		} else if (displayToggle == 0) {
+			number9();
+			rightLED();
+			displayChangeValid = 0;
+		}
 		break;
 	default:
-		number0();
+		if (displayToggle == 1) {
+			number0();
+			leftLED();
+			displayChangeValid = 0;
+		} else if (displayToggle == 0) {
+			number0();
+			rightLED();
+			displayChangeValid = 0;
+		}
 	}
 }

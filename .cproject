@@ -72,7 +72,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding=".git/objects/info|.git/objects/pack|.git/refs/tags|lib/c8051f970|lib/c8051f990|src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
@@ -151,7 +151,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding=".git/objects/info|.git/objects/pack|.git/refs/tags|lib/c8051f970|lib/c8051f990|src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
@@ -159,7 +159,7 @@
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
 	</storageModule>
-	<storageModule moduleId="com.silabs.ss.framework.ide.project.core.cpp" project.generation="11" projectCommon.boardIds="brd5101a:0.0.0.A01" projectCommon.buildArtifactType="EXE" projectCommon.importModeId="COPY" projectCommon.partId="mcu.8051.efm8.sb1.efm8sb10f8g-a-qfn24" projectCommon.sdkId="com.silabs.sdk.8051:4.0.9._-963069514"/>
+	<storageModule moduleId="com.silabs.ss.framework.ide.project.core.cpp" project.generation="1" projectCommon.boardIds="brd5101a:0.0.0.A01" projectCommon.buildArtifactType="EXE" projectCommon.importModeId="COPY" projectCommon.partId="mcu.8051.efm8.sb1.efm8sb10f8g-a-qfn24" projectCommon.sdkId="com.silabs.sdk.8051:4.0.9._-963069514"/>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="LED_Test_7Seg.com.silabs.ss.framework.ide.project.core.cdt.cdtMbsProjectType.315776704" name="SLS CDT Project" projectType="com.silabs.ss.framework.ide.project.core.cdt.cdtMbsProjectType"/>
 	</storageModule>
@@ -173,5 +173,12 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.silabs.ide.si8051.keil.KeilScannerInfoCollector"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Keil 8051 v9.53 - Debug">
+			<resource resourceType="PROJECT" workspacePath="/LED_Test_7Seg"/>
+		</configuration>
+		<configuration configurationName="Keil 8051 v9.53 - Release">
+			<resource resourceType="PROJECT" workspacePath="/LED_Test_7Seg"/>
+		</configuration>
+	</storageModule>
 </cproject>

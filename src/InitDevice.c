@@ -27,6 +27,7 @@ extern void enter_DefaultMode_from_RESET(void) {
 	uint8_t SFRPAGE_save = SFRPAGE;
 	PCA_0_enter_DefaultMode_from_RESET();
 	PCACH_0_enter_DefaultMode_from_RESET();
+	PCACH_1_enter_DefaultMode_from_RESET();
 	PCACH_2_enter_DefaultMode_from_RESET();
 	VREG_0_enter_DefaultMode_from_RESET();
 	PORTS_0_enter_DefaultMode_from_RESET();
@@ -37,8 +38,10 @@ extern void enter_DefaultMode_from_RESET(void) {
 	RTC_0_enter_DefaultMode_from_RESET();
 	CLOCK_0_enter_DefaultMode_from_RESET();
 	TIMER01_0_enter_DefaultMode_from_RESET();
+	TIMER16_2_enter_DefaultMode_from_RESET();
 	TIMER_SETUP_0_enter_DefaultMode_from_RESET();
 	CSLIB_0_enter_DefaultMode_from_RESET();
+	INTERRUPT_0_enter_DefaultMode_from_RESET();
 	// Restore the SFRPAGE
 	SFRPAGE = SFRPAGE_save;
 	// [Config Calls]$
@@ -178,14 +181,6 @@ extern void PBCFG_0_enter_DefaultMode_from_RESET(void) {
 	// [XBR0 - Port I/O Crossbar 0]$
 
 	// $[XBR1 - Port I/O Crossbar 1]
-	/***********************************************************************
-	 - CEX0 routed to Port pin
-	 - ECI unavailable at Port pin
-	 - T0 unavailable at Port pin
-	 - T1 unavailable at Port pin
-	 ***********************************************************************/
-	XBR1 = XBR1_PCA0ME__CEX0 | XBR1_ECIE__DISABLED | XBR1_T0E__DISABLED
-			| XBR1_T1E__DISABLED;
 	// [XBR1 - Port I/O Crossbar 1]$
 
 }
@@ -320,6 +315,19 @@ extern void PORTS_0_enter_DefaultMode_from_RESET(void) {
 	// [P0MDIN - Port 0 Input Mode]$
 
 	// $[P0SKIP - Port 0 Skip]
+	/***********************************************************************
+	 - P0.0 pin is not skipped by the crossbar
+	 - P0.1 pin is skipped by the crossbar
+	 - P0.2 pin is skipped by the crossbar
+	 - P0.3 pin is skipped by the crossbar
+	 - P0.4 pin is skipped by the crossbar
+	 - P0.5 pin is skipped by the crossbar
+	 - P0.6 pin is skipped by the crossbar
+	 - P0.7 pin is skipped by the crossbar
+	 ***********************************************************************/
+	P0SKIP = P0SKIP_B0__NOT_SKIPPED | P0SKIP_B1__SKIPPED | P0SKIP_B2__SKIPPED
+			| P0SKIP_B3__SKIPPED | P0SKIP_B4__SKIPPED | P0SKIP_B5__SKIPPED
+			| P0SKIP_B6__SKIPPED | P0SKIP_B7__SKIPPED;
 	// [P0SKIP - Port 0 Skip]$
 
 	// $[P0MASK - Port 0 Mask]
@@ -355,7 +363,7 @@ extern void PORTS_1_enter_DefaultMode_from_RESET(void) {
 	/***********************************************************************
 	 - P1.0 output is open-drain
 	 - P1.1 output is push-pull
-	 - P1.2 output is open-drain
+	 - P1.2 output is push-pull
 	 - P1.3 output is open-drain
 	 - P1.4 output is open-drain
 	 - P1.5 output is open-drain
@@ -364,7 +372,7 @@ extern void PORTS_1_enter_DefaultMode_from_RESET(void) {
 	 ***********************************************************************/
 	SFRPAGE = 0x00;
 	P1MDOUT = P1MDOUT_B0__OPEN_DRAIN | P1MDOUT_B1__PUSH_PULL
-			| P1MDOUT_B2__OPEN_DRAIN | P1MDOUT_B3__OPEN_DRAIN
+			| P1MDOUT_B2__PUSH_PULL | P1MDOUT_B3__OPEN_DRAIN
 			| P1MDOUT_B4__OPEN_DRAIN | P1MDOUT_B5__OPEN_DRAIN
 			| P1MDOUT_B6__OPEN_DRAIN | P1MDOUT_B7__OPEN_DRAIN;
 	// [P1MDOUT - Port 1 Output Mode]$
@@ -373,14 +381,14 @@ extern void PORTS_1_enter_DefaultMode_from_RESET(void) {
 	/***********************************************************************
 	 - P1.0 pin is configured for analog mode
 	 - P1.1 pin is configured for digital mode
-	 - P1.2 pin is configured for analog mode
+	 - P1.2 pin is configured for digital mode
 	 - P1.3 pin is configured for analog mode
 	 - P1.4 pin is configured for analog mode
 	 - P1.5 pin is configured for analog mode
 	 - P1.6 pin is configured for analog mode
 	 - P1.7 pin is configured for analog mode
 	 ***********************************************************************/
-	P1MDIN = P1MDIN_B0__ANALOG | P1MDIN_B1__DIGITAL | P1MDIN_B2__ANALOG
+	P1MDIN = P1MDIN_B0__ANALOG | P1MDIN_B1__DIGITAL | P1MDIN_B2__DIGITAL
 			| P1MDIN_B3__ANALOG | P1MDIN_B4__ANALOG | P1MDIN_B5__ANALOG
 			| P1MDIN_B6__ANALOG | P1MDIN_B7__ANALOG;
 	// [P1MDIN - Port 1 Input Mode]$
@@ -414,7 +422,7 @@ extern void PORTS_1_enter_DefaultMode_from_RESET(void) {
 	/***********************************************************************
 	 - P1.0 output has low output drive strength
 	 - P1.1 output has high output drive strength
-	 - P1.2 output has low output drive strength
+	 - P1.2 output has high output drive strength
 	 - P1.3 output has low output drive strength
 	 - P1.4 output has low output drive strength
 	 - P1.5 output has low output drive strength
@@ -422,7 +430,7 @@ extern void PORTS_1_enter_DefaultMode_from_RESET(void) {
 	 - P1.7 output has low output drive strength
 	 ***********************************************************************/
 	SFRPAGE = 0x0F;
-	P1DRV = P1DRV_B0__LOW_DRIVE | P1DRV_B1__HIGH_DRIVE | P1DRV_B2__LOW_DRIVE
+	P1DRV = P1DRV_B0__LOW_DRIVE | P1DRV_B1__HIGH_DRIVE | P1DRV_B2__HIGH_DRIVE
 			| P1DRV_B3__LOW_DRIVE | P1DRV_B4__LOW_DRIVE | P1DRV_B5__LOW_DRIVE
 			| P1DRV_B6__LOW_DRIVE | P1DRV_B7__LOW_DRIVE;
 	// [P1DRV - Port 1 Drive Strength]$
@@ -543,6 +551,123 @@ extern void PORTS_2_enter_DefaultMode_from_RESET(void) {
 
 	// $[P2DRV - Port 2 Drive Strength]
 	// [P2DRV - Port 2 Drive Strength]$
+
+}
+
+extern void PCACH_1_enter_DefaultMode_from_RESET(void) {
+	// $[PCA0 Settings Save]
+	// Select Capture/Compare register)
+	PCA0PWM &= ~PCA0PWM_ARSEL__BMASK;
+	// [PCA0 Settings Save]$
+
+	// $[PCA0CPM1 - PCA Channel 1 Capture/Compare Mode]
+	/***********************************************************************
+	 - Disable negative edge capture
+	 - Disable CCF1 interrupts
+	 - Disable match function
+	 - 8 to 11-bit PWM selected
+	 - Disable positive edge capture
+	 - Enable comparator function
+	 - Enable PWM function
+	 - Disable toggle function
+	 ***********************************************************************/
+	PCA0CPM1 = PCA0CPM1_CAPN__DISABLED | PCA0CPM1_ECCF__DISABLED
+			| PCA0CPM1_MAT__DISABLED | PCA0CPM1_PWM16__8_BIT
+			| PCA0CPM1_CAPP__DISABLED | PCA0CPM1_ECOM__ENABLED
+			| PCA0CPM1_PWM__ENABLED | PCA0CPM1_TOG__DISABLED;
+	// [PCA0CPM1 - PCA Channel 1 Capture/Compare Mode]$
+
+	// $[PCA0CPL1 - PCA Channel 1 Capture Module Low Byte]
+	// [PCA0CPL1 - PCA Channel 1 Capture Module Low Byte]$
+
+	// $[PCA0CPH1 - PCA Channel 1 Capture Module High Byte]
+	// [PCA0CPH1 - PCA Channel 1 Capture Module High Byte]$
+
+	// $[Auto-reload]
+	// [Auto-reload]$
+
+	// $[PCA0 Settings Restore]
+	// [PCA0 Settings Restore]$
+
+}
+
+extern void TIMER16_2_enter_DefaultMode_from_RESET(void) {
+	// $[Timer Initialization]
+	// Save Timer Configuration
+	uint8_t TMR2CN0_TR2_save;
+	TMR2CN0_TR2_save = TMR2CN0 & TMR2CN0_TR2__BMASK;
+	// Stop Timer
+	TMR2CN0 &= ~(TMR2CN0_TR2__BMASK);
+	// [Timer Initialization]$
+
+	// $[TMR2CN0 - Timer 2 Control]
+	// [TMR2CN0 - Timer 2 Control]$
+
+	// $[TMR2H - Timer 2 High Byte]
+	// [TMR2H - Timer 2 High Byte]$
+
+	// $[TMR2L - Timer 2 Low Byte]
+	// [TMR2L - Timer 2 Low Byte]$
+
+	// $[TMR2RLH - Timer 2 Reload High Byte]
+	/***********************************************************************
+	 - Timer 2 Reload High Byte = 0xBD
+	 ***********************************************************************/
+	TMR2RLH = (0xBD << TMR2RLH_TMR2RLH__SHIFT);
+	// [TMR2RLH - Timer 2 Reload High Byte]$
+
+	// $[TMR2RLL - Timer 2 Reload Low Byte]
+	/***********************************************************************
+	 - Timer 2 Reload Low Byte = 0x8A
+	 ***********************************************************************/
+	TMR2RLL = (0x8A << TMR2RLL_TMR2RLL__SHIFT);
+	// [TMR2RLL - Timer 2 Reload Low Byte]$
+
+	// $[TMR2CN0]
+	/***********************************************************************
+	 - Start Timer 2 running
+	 ***********************************************************************/
+	TMR2CN0 |= TMR2CN0_TR2__RUN;
+	// [TMR2CN0]$
+
+	// $[Timer Restoration]
+	// Restore Timer Configuration
+	TMR2CN0 |= TMR2CN0_TR2_save;
+	// [Timer Restoration]$
+
+}
+
+extern void INTERRUPT_0_enter_DefaultMode_from_RESET(void) {
+	// $[EIE1 - Extended Interrupt Enable 1]
+	// [EIE1 - Extended Interrupt Enable 1]$
+
+	// $[EIP1 - Extended Interrupt Priority 1]
+	// [EIP1 - Extended Interrupt Priority 1]$
+
+	// $[IE - Interrupt Enable]
+	/***********************************************************************
+	 - Enable each interrupt according to its individual mask setting
+	 - Disable external interrupt 0
+	 - Disable external interrupt 1
+	 - Disable all SPI0 interrupts
+	 - Disable all Timer 0 interrupt
+	 - Disable all Timer 1 interrupt
+	 - Enable interrupt requests generated by the TF2L or TF2H flags
+	 - Disable UART0 interrupt
+	 ***********************************************************************/
+	IE = IE_EA__ENABLED | IE_EX0__DISABLED | IE_EX1__DISABLED
+			| IE_ESPI0__DISABLED | IE_ET0__DISABLED | IE_ET1__DISABLED
+			| IE_ET2__ENABLED | IE_ES0__DISABLED;
+	// [IE - Interrupt Enable]$
+
+	// $[IP - Interrupt Priority]
+	// [IP - Interrupt Priority]$
+
+	// $[EIE2 - Extended Interrupt Enable 2]
+	// [EIE2 - Extended Interrupt Enable 2]$
+
+	// $[EIP2 - Extended Interrupt Priority 2]
+	// [EIP2 - Extended Interrupt Priority 2]$
 
 }
 

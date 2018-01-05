@@ -14,8 +14,8 @@ void OutputSensorDescriptors(void);
 
 // $[sensor descriptors]
 #define SENSOR_DESCRIPTOR_LIST \
-  "CS1.0", \
   "CS1.5", \
+  "CS1.0", \
 // [sensor descriptors]$
 
 #endif // __SILICON_LABS_CSLIB_SENSOR_DESCRIPTORS_H

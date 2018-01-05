@@ -3,6 +3,7 @@
 "./lib/efm8sb1/cslib/device_layer/hardware_routines.OBJ",
 "./lib/efm8sb1/cslib/device_layer/low_power_config.OBJ",
 "./src/InitDevice.OBJ",
+"./src/Interrupts.OBJ",
 "./src/LED_Test_7Seg_main.OBJ",
 "./src/SILABS_STARTUP.OBJ",
 "C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Lib/efm8_capsense/CSLIBRARY.LIB"

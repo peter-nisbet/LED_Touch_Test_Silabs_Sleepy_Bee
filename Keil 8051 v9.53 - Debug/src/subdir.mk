@@ -8,10 +8,12 @@ A51_UPPER_SRCS += \
 
 C_SRCS += \
 ../src/InitDevice.c \
+../src/Interrupts.c \
 ../src/LED_Test_7Seg_main.c 
 
 OBJS += \
 ./src/InitDevice.OBJ \
+./src/Interrupts.OBJ \
 ./src/LED_Test_7Seg_main.OBJ \
 ./src/SILABS_STARTUP.OBJ 
 
@@ -25,6 +27,8 @@ src/%.OBJ: ../src/%.c
 	@echo ' '
 
 src/InitDevice.OBJ: C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/EFM8SB1/inc/SI_EFM8SB1_Register_Enums.h C:/Users/pnisbet/Documents/Silabs_Workspace/LED_Test_7Seg/inc/InitDevice.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Lib/efm8_capsense/cslib.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/EFM8SB1/inc/SI_EFM8SB1_Defs.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Lib/efm8_capsense/si_toolchain_select.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/shared/si8051Base/si_toolchain.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/shared/si8051Base/stdint.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/shared/si8051Base/stdbool.h
+
+src/Interrupts.OBJ: C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/EFM8SB1/inc/SI_EFM8SB1_Register_Enums.h C:/Users/pnisbet/Documents/Silabs_Workspace/LED_Test_7Seg/inc/LED_Test_7Seg_main.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/EFM8SB1/inc/SI_EFM8SB1_Defs.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/shared/si8051Base/si_toolchain.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/shared/si8051Base/stdint.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/shared/si8051Base/stdbool.h
 
 src/LED_Test_7Seg_main.OBJ: C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/EFM8SB1/inc/SI_EFM8SB1_Register_Enums.h C:/Users/pnisbet/Documents/Silabs_Workspace/LED_Test_7Seg/inc/InitDevice.h C:/Users/pnisbet/Documents/Silabs_Workspace/LED_Test_7Seg/inc/config/cslib_config.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Lib/efm8_capsense/cslib.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/EFM8SB1/inc/SI_EFM8SB1_Defs.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Lib/efm8_capsense/si_toolchain_select.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/shared/si8051Base/si_toolchain.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/shared/si8051Base/stdint.h C:/SiliconLabs/SimplicityStudio/v4/developer/sdks/8051/v4.0.9/Device/shared/si8051Base/stdbool.h
 
