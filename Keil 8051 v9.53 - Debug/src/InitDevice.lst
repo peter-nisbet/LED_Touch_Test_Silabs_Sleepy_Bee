@@ -1,4 +1,4 @@
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 1   
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 1   
 
 
 C51 COMPILER V9.53.0.0, COMPILATION OF MODULE INITDEVICE
@@ -63,7 +63,7 @@ line level    source
   47   1              // [Config Calls]$
   48   1      
   49   1      }
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 2   
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 2   
 
   50          
   51          extern void PCA_0_enter_DefaultMode_from_RESET(void) {
@@ -128,7 +128,7 @@ line level    source
  110   1              // $[PCA0CPL0 - PCA Channel 0 Capture Module Low Byte]
  111   1              // [PCA0CPL0 - PCA Channel 0 Capture Module Low Byte]$
  112   1      
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 3   
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 3   
 
  113   1              // $[PCA0CPH0 - PCA Channel 0 Capture Module High Byte]
  114   1              // [PCA0CPH0 - PCA Channel 0 Capture Module High Byte]$
@@ -193,7 +193,7 @@ line level    source
  173   1              /***********************************************************************
  174   1               - Weak Pullups enabled 
  175   1               - Crossbar enabled
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 4   
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 4   
 
  176   1               ***********************************************************************/
  177   1              XBR2 = XBR2_WEAKPUD__PULL_UPS_ENABLED | XBR2_XBARE__ENABLED;
@@ -258,7 +258,7 @@ line level    source
  236   1      
  237   1              // $[TL0 - Timer 0 Low Byte]
  238   1              // [TL0 - Timer 0 Low Byte]$
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 5   
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 5   
 
  239   1      
  240   1              // $[TH1 - Timer 1 High Byte]
@@ -323,7 +323,7 @@ line level    source
  299   1               - P0.0 output is push-pull
  300   1               - P0.1 output is push-pull
  301   1               - P0.2 output is push-pull
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 6   
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 6   
 
  302   1               - P0.3 output is push-pull
  303   1               - P0.4 output is push-pull
@@ -388,7 +388,7 @@ line level    source
  362   1              // $[P1MDOUT - Port 1 Output Mode]
  363   1              /***********************************************************************
  364   1               - P1.0 output is open-drain
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 7   
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 7   
 
  365   1               - P1.1 output is push-pull
  366   1               - P1.2 output is push-pull
@@ -453,7 +453,7 @@ line level    source
  425   1               - P1.2 output has high output drive strength
  426   1               - P1.3 output has low output drive strength
  427   1               - P1.4 output has low output drive strength
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 8   
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 8   
 
  428   1               - P1.5 output has low output drive strength
  429   1               - P1.6 output has low output drive strength
@@ -518,7 +518,7 @@ line level    source
  488   1      
  489   1              // $[ALARM2 - RTC Alarm Programmed Value 2]
  490   1              // [ALARM2 - RTC Alarm Programmed Value 2]$
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 9   
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 9   
 
  491   1      
  492   1              // $[ALARM3 - RTC Alarm Programmed Value 3]
@@ -583,7 +583,7 @@ line level    source
  551   1      
  552   1              // $[P2DRV - Port 2 Drive Strength]
  553   1              // [P2DRV - Port 2 Drive Strength]$
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 10  
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 10  
 
  554   1      
  555   1      }
@@ -648,7 +648,7 @@ line level    source
  614   1               - Timer 2 Reload High Byte = 0xBD
  615   1               ***********************************************************************/
  616   1              TMR2RLH = (0xBD << TMR2RLH_TMR2RLH__SHIFT);
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 11  
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 11  
 
  617   1              // [TMR2RLH - Timer 2 Reload High Byte]$
  618   1      
@@ -713,7 +713,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =    248    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
-C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/05/2018 14:42:44 PAGE 12  
+C51 COMPILER V9.53.0.0   INITDEVICE                                                        01/08/2018 10:52:33 PAGE 12  
 
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----       1

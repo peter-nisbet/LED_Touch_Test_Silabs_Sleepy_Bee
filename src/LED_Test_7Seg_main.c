@@ -33,6 +33,8 @@ void number0(void);
 void numberDisplay(uint8_t countIndex);
 void leftLED(void);
 void rightLED(void);
+void numberProcess(int number);
+void numberDisplayM(uint8_t countIndex, uint8_t direction);
 
 //Global Variables by Peter//
 bool displayToggle = 0;
@@ -92,7 +94,7 @@ int main(void) {
 		// power state until it is time to take another scan, or put the device into a
 		// low-power sleep mode if no touches are active
 		// -----------------------------------------------------------------------------
-		CSLIB_lowPowerUpdate();
+		//CSLIB_lowPowerUpdate();
 
 		// -----------------------------------------------------------------------------
 		// Performs all scanning and data structure updates
@@ -101,37 +103,38 @@ int main(void) {
 
 // [Generated Run-time code]$
 
-		/*if (CSLIB_isSensorDebounceActive(0) && pressValid == 0) {
-		 numberCount++;
+		if (CSLIB_isSensorDebounceActive(0) && pressValid == 0) {
+			numberCount++;
 
-		 if (numberCount > 9) {
-		 numberCount = 9;
-		 }
+			if (numberCount > 99) {
+				numberCount = 99;
+			}
 
-		 LED0 = 1;
-		 pressValid = 1;
-		 pressCount = 0;
-		 } else if (CSLIB_isSensorDebounceActive(1) && pressValid == 0) {
-		 numberCount--;
+			LED0 = 1;
+			pressValid = 1;
+			pressCount = 0;
+		} else if (CSLIB_isSensorDebounceActive(1) && pressValid == 0) {
+			numberCount--;
 
-		 if (numberCount < 0) {
-		 numberCount = 0;
-		 }
+			if (numberCount < 0) {
+				numberCount = 0;
+			}
 
-		 LED0 = 1;
-		 pressValid = 1;
-		 pressCount = 0;
-		 } else {
-		 LED0 = 0;
-		 pressCount++;
+			LED0 = 1;
+			pressValid = 1;
+			pressCount = 0;
+		} else {
+			LED0 = 0;
+			pressCount++;
 
-		 if (pressCount > touchCounter) {
-		 pressCount = 0;
-		 pressValid = 0;
-		 }
-		 }*/
-		numberCount = 9;
-		numberDisplay(numberCount);
+			if (pressCount > touchCounter) {
+				pressCount = 0;
+				pressValid = 0;
+			}
+		}
+		//numberCount = 9;
+		//numberDisplay(numberCount);
+		numberProcess(numberCount);
 
 	}
 }
@@ -250,116 +253,235 @@ void rightLED(void) {
 	 PCA0CPH1 = 0x00;*/
 }
 
-void numberDisplay(uint8_t countIndex) {
+/*void numberDisplay(uint8_t countIndex) {
+ switch (countIndex) {
+ case 1:
+ if (displayToggle == 1) {
+ number0();
+ leftLED();
+ displayChangeValid = 0;
+ } else if (displayToggle == 0) {
+ number1();
+ rightLED();
+ displayChangeValid = 0;
+ }
+ break;
+ case 2:
+ if (displayToggle == 1) {
+ number0();
+ leftLED();
+ displayChangeValid = 0;
+ } else if (displayToggle == 0) {
+ number2();
+ rightLED();
+ displayChangeValid = 0;
+ }
+ break;
+ case 3:
+ if (displayToggle == 1) {
+ number0();
+ leftLED();
+ displayChangeValid = 0;
+ } else if (displayToggle == 0) {
+ number3();
+ rightLED();
+ displayChangeValid = 0;
+ }
+ break;
+ case 4:
+ if (displayToggle == 1) {
+ number0();
+ leftLED();
+ displayChangeValid = 0;
+ } else if (displayToggle == 0) {
+ number4();
+ rightLED();
+ displayChangeValid = 0;
+ }
+ break;
+ case 5:
+ if (displayToggle == 1) {
+ number0();
+ leftLED();
+ displayChangeValid = 0;
+ } else if (displayToggle == 0) {
+ number5();
+ rightLED();
+ displayChangeValid = 0;
+ }
+ break;
+ case 6:
+ if (displayToggle == 1) {
+ number0();
+ leftLED();
+ displayChangeValid = 0;
+ } else if (displayToggle == 0) {
+ number6();
+ rightLED();
+ displayChangeValid = 0;
+ }
+ break;
+ case 7:
+ if (displayToggle == 1) {
+ number0();
+ leftLED();
+ displayChangeValid = 0;
+ } else if (displayToggle == 0) {
+ number7();
+ rightLED();
+ displayChangeValid = 0;
+ }
+ break;
+ case 8:
+ if (displayToggle == 1) {
+ number0();
+ leftLED();
+ displayChangeValid = 0;
+ } else if (displayToggle == 0) {
+ number8();
+ rightLED();
+ displayChangeValid = 0;
+ }
+ break;
+ case 9:
+ if (displayToggle == 1) {
+ number0();
+ leftLED();
+ displayChangeValid = 0;
+ } else if (displayToggle == 0) {
+ number9();
+ rightLED();
+ displayChangeValid = 0;
+ }
+ break;
+ default:
+ if (displayToggle == 1) {
+ number0();
+ leftLED();
+ displayChangeValid = 0;
+ } else if (displayToggle == 0) {
+ number0();
+ rightLED();
+ displayChangeValid = 0;
+ }
+ }
+ }*/
+
+void numberDisplayM(uint8_t countIndex, uint8_t direction) {
 	switch (countIndex) {
 	case 1:
-		if (displayToggle == 1) {
-			number0();
+		number1();
+		if (direction == 1) {
 			leftLED();
 			displayChangeValid = 0;
-		} else if (displayToggle == 0) {
-			number1();
+		} else if (direction == 0) {
 			rightLED();
 			displayChangeValid = 0;
 		}
 		break;
 	case 2:
-		if (displayToggle == 1) {
-			number0();
+		number2();
+		if (direction == 1) {
 			leftLED();
 			displayChangeValid = 0;
-		} else if (displayToggle == 0) {
-			number2();
+		} else if (direction == 0) {
 			rightLED();
 			displayChangeValid = 0;
 		}
 		break;
 	case 3:
-		if (displayToggle == 1) {
-			number0();
+		number3();
+		if (direction == 1) {
 			leftLED();
 			displayChangeValid = 0;
-		} else if (displayToggle == 0) {
-			number3();
+		} else if (direction == 0) {
 			rightLED();
 			displayChangeValid = 0;
 		}
 		break;
 	case 4:
-		if (displayToggle == 1) {
-			number0();
+		number4();
+		if (direction == 1) {
 			leftLED();
 			displayChangeValid = 0;
-		} else if (displayToggle == 0) {
-			number4();
+		} else if (direction == 0) {
 			rightLED();
 			displayChangeValid = 0;
 		}
 		break;
 	case 5:
-		if (displayToggle == 1) {
-			number0();
+		number5();
+		if (direction == 1) {
 			leftLED();
 			displayChangeValid = 0;
-		} else if (displayToggle == 0) {
-			number5();
+		} else if (direction == 0) {
 			rightLED();
 			displayChangeValid = 0;
 		}
 		break;
 	case 6:
-		if (displayToggle == 1) {
-			number0();
+		number6();
+		if (direction == 1) {
 			leftLED();
 			displayChangeValid = 0;
-		} else if (displayToggle == 0) {
-			number6();
+		} else if (direction == 0) {
 			rightLED();
 			displayChangeValid = 0;
 		}
 		break;
 	case 7:
-		if (displayToggle == 1) {
-			number0();
+		number7();
+		if (direction == 1) {
 			leftLED();
 			displayChangeValid = 0;
-		} else if (displayToggle == 0) {
-			number7();
+		} else if (direction == 0) {
 			rightLED();
 			displayChangeValid = 0;
 		}
 		break;
 	case 8:
-		if (displayToggle == 1) {
-			number0();
+		number8();
+		if (direction == 1) {
 			leftLED();
 			displayChangeValid = 0;
-		} else if (displayToggle == 0) {
-			number8();
+		} else if (direction == 0) {
 			rightLED();
 			displayChangeValid = 0;
 		}
 		break;
 	case 9:
-		if (displayToggle == 1) {
-			number0();
+		number9();
+		if (direction == 1) {
 			leftLED();
 			displayChangeValid = 0;
-		} else if (displayToggle == 0) {
-			number9();
+		} else if (direction == 0) {
 			rightLED();
 			displayChangeValid = 0;
 		}
 		break;
 	default:
-		if (displayToggle == 1) {
-			number0();
+		number0();
+		if (direction == 1) {
 			leftLED();
 			displayChangeValid = 0;
-		} else if (displayToggle == 0) {
-			number0();
+		} else if (direction == 0) {
 			rightLED();
 			displayChangeValid = 0;
 		}
 	}
 }
+
+void numberProcess(int number) {
+	int numH;
+	int numL;
+
+	numL = number % 10;
+	numH = (number / 10);
+
+	if (displayToggle == 1) {
+		numberDisplayM(numH, 1);
+	} else if (displayToggle == 0) {
+		numberDisplayM(numL, 0);
+	}
+}
+

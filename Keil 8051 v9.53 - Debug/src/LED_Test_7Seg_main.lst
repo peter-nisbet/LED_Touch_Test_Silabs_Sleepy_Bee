@@ -1,4 +1,4 @@
-C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/05/2018 14:42:46 PAGE 1   
+C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/08/2018 10:55:39 PAGE 1   
 
 
 C51 COMPILER V9.53.0.0, COMPILATION OF MODULE LED_TEST_7SEG_MAIN
@@ -49,356 +49,482 @@ line level    source
   33          void numberDisplay(uint8_t countIndex);
   34          void leftLED(void);
   35          void rightLED(void);
-  36          
-  37          //Global Variables by Peter//
-  38          bool displayToggle = 0;
-  39          bool displayChangeValid = 0;
-  40          
-  41          //-----------------------------------------------------------------------------
-  42          // SiLabs_Startup() Routine
-  43          // ----------------------------------------------------------------------------
-  44          // This function is called immediately after reset, before the initialization
-  45          // code is run in SILABS_STARTUP.A51 (which runs before main() ). This is a
-  46          // useful place to disable the watchdog timer, which is enable by default
-  47          // and may trigger before main() in some instances.
-  48          //-----------------------------------------------------------------------------
-  49          void SiLabs_Startup(void) {
-C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/05/2018 14:42:46 PAGE 2   
+  36          void numberProcess(int number);
+  37          void numberDisplayM(uint8_t countIndex, uint8_t direction);
+  38          
+  39          //Global Variables by Peter//
+  40          bool displayToggle = 0;
+  41          bool displayChangeValid = 0;
+  42          
+  43          //-----------------------------------------------------------------------------
+  44          // SiLabs_Startup() Routine
+  45          // ----------------------------------------------------------------------------
+  46          // This function is called immediately after reset, before the initialization
+  47          // code is run in SILABS_STARTUP.A51 (which runs before main() ). This is a
+  48          // useful place to disable the watchdog timer, which is enable by default
+  49          // and may trigger before main() in some instances.
+C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/08/2018 10:55:39 PAGE 2   
 
-  50   1      
-  51   1      // $[SiLabs Startup]
-  52   1              /*
-  53   1               // WDTE (Watchdog Timer Enable) = DISABLED (Disable Watchdog Timer.)
-  54   1               */
-  55   1              PCA0MD &= ~PCA0MD_WDTE__BMASK;
-  56   1      
-  57   1      // [SiLabs Startup]$
-  58   1      }
-  59          
-  60          //Pin Definitions//
-  61          SI_SBIT(LEDA, SFR_P0, 1);
-  62          SI_SBIT(LEDB, SFR_P0, 2);
-  63          SI_SBIT(LEDC, SFR_P0, 3);
-  64          SI_SBIT(LEDD, SFR_P0, 4);
-  65          SI_SBIT(LEDE, SFR_P0, 5);
-  66          SI_SBIT(LEDF, SFR_P0, 6);
-  67          SI_SBIT(LEDG, SFR_P0, 7);
-  68          
-  69          SI_SBIT(LED0, SFR_P1, 1);
+  50          //-----------------------------------------------------------------------------
+  51          void SiLabs_Startup(void) {
+  52   1      
+  53   1      // $[SiLabs Startup]
+  54   1              /*
+  55   1               // WDTE (Watchdog Timer Enable) = DISABLED (Disable Watchdog Timer.)
+  56   1               */
+  57   1              PCA0MD &= ~PCA0MD_WDTE__BMASK;
+  58   1      
+  59   1      // [SiLabs Startup]$
+  60   1      }
+  61          
+  62          //Pin Definitions//
+  63          SI_SBIT(LEDA, SFR_P0, 1);
+  64          SI_SBIT(LEDB, SFR_P0, 2);
+  65          SI_SBIT(LEDC, SFR_P0, 3);
+  66          SI_SBIT(LEDD, SFR_P0, 4);
+  67          SI_SBIT(LEDE, SFR_P0, 5);
+  68          SI_SBIT(LEDF, SFR_P0, 6);
+  69          SI_SBIT(LEDG, SFR_P0, 7);
   70          
-  71          SI_SBIT(LEDR, SFR_P1, 2);
-  72          SI_SBIT(LEDL, SFR_P0, 0);
-  73          
-  74          //-----------------------------------------------------------------------------
-  75          // main() Routine
-  76          // ----------------------------------------------------------------------------
-  77          int main(void) {
-  78   1              int16_t numberCount = 0;
-  79   1              uint16_t pressCount = 0;
-  80   1              bool pressValid = 0;
-  81   1      
-  82   1              // Call hardware initialization routine
-  83   1              enter_DefaultMode_from_RESET();
-  84   1      
-  85   1              /*PCA0CPH0 = 0x02;
-  86   1               PCA0CPH1 = 0x50;*/
-  87   1      
-  88   1              while (1) {
-  89   2      // $[Generated Run-time code]
-  90   2                      // -----------------------------------------------------------------------------
-  91   2                      // If low power features are enabled, this will either put the device into a low
-  92   2                      // power state until it is time to take another scan, or put the device into a
-  93   2                      // low-power sleep mode if no touches are active
-  94   2                      // -----------------------------------------------------------------------------
-  95   2                      CSLIB_lowPowerUpdate();
-  96   2      
-  97   2                      // -----------------------------------------------------------------------------
-  98   2                      // Performs all scanning and data structure updates
+  71          SI_SBIT(LED0, SFR_P1, 1);
+  72          
+  73          SI_SBIT(LEDR, SFR_P1, 2);
+  74          SI_SBIT(LEDL, SFR_P0, 0);
+  75          
+  76          //-----------------------------------------------------------------------------
+  77          // main() Routine
+  78          // ----------------------------------------------------------------------------
+  79          int main(void) {
+  80   1              int16_t numberCount = 0;
+  81   1              uint16_t pressCount = 0;
+  82   1              bool pressValid = 0;
+  83   1      
+  84   1              // Call hardware initialization routine
+  85   1              enter_DefaultMode_from_RESET();
+  86   1      
+  87   1              /*PCA0CPH0 = 0x02;
+  88   1               PCA0CPH1 = 0x50;*/
+  89   1      
+  90   1              while (1) {
+  91   2      // $[Generated Run-time code]
+  92   2                      // -----------------------------------------------------------------------------
+  93   2                      // If low power features are enabled, this will either put the device into a low
+  94   2                      // power state until it is time to take another scan, or put the device into a
+  95   2                      // low-power sleep mode if no touches are active
+  96   2                      // -----------------------------------------------------------------------------
+  97   2                      //CSLIB_lowPowerUpdate();
+  98   2      
   99   2                      // -----------------------------------------------------------------------------
- 100   2                      CSLIB_update();
- 101   2      
- 102   2      // [Generated Run-time code]$
+ 100   2                      // Performs all scanning and data structure updates
+ 101   2                      // -----------------------------------------------------------------------------
+ 102   2                      CSLIB_update();
  103   2      
- 104   2                      /*if (CSLIB_isSensorDebounceActive(0) && pressValid == 0) {
- 105   2                       numberCount++;
- 106   2      
- 107   2                       if (numberCount > 9) {
- 108   2                       numberCount = 9;
- 109   2                       }
- 110   2      
- 111   2                       LED0 = 1;
- 112   2                       pressValid = 1;
-C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/05/2018 14:42:46 PAGE 3   
+ 104   2      // [Generated Run-time code]$
+ 105   2      
+ 106   2                      if (CSLIB_isSensorDebounceActive(0) && pressValid == 0) {
+ 107   3                              numberCount++;
+ 108   3      
+ 109   3                              if (numberCount > 99) {
+ 110   4                                      numberCount = 99;
+ 111   4                              }
+ 112   3      
+C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/08/2018 10:55:39 PAGE 3   
 
- 113   2                       pressCount = 0;
- 114   2                       } else if (CSLIB_isSensorDebounceActive(1) && pressValid == 0) {
- 115   2                       numberCount--;
- 116   2      
- 117   2                       if (numberCount < 0) {
- 118   2                       numberCount = 0;
- 119   2                       }
- 120   2      
- 121   2                       LED0 = 1;
- 122   2                       pressValid = 1;
- 123   2                       pressCount = 0;
- 124   2                       } else {
- 125   2                       LED0 = 0;
- 126   2                       pressCount++;
- 127   2      
- 128   2                       if (pressCount > touchCounter) {
- 129   2                       pressCount = 0;
- 130   2                       pressValid = 0;
- 131   2                       }
- 132   2                       }*/
- 133   2                      numberCount = 9;
- 134   2                      numberDisplay(numberCount);
- 135   2      
- 136   2              }
- 137   1      }
- 138          
- 139          void number1(void) {
- 140   1              LEDA = 0;
- 141   1              LEDB = 1;
- 142   1              LEDC = 1;
- 143   1              LEDD = 0;
- 144   1              LEDE = 0;
- 145   1              LEDF = 0;
- 146   1              LEDG = 0;
- 147   1      }
- 148          
- 149          void number2(void) {
- 150   1              LEDA = 1;
- 151   1              LEDB = 1;
- 152   1              LEDC = 0;
- 153   1              LEDD = 1;
- 154   1              LEDE = 1;
- 155   1              LEDF = 0;
- 156   1              LEDG = 1;
- 157   1      }
- 158          
- 159          void number3(void) {
- 160   1              LEDA = 1;
- 161   1              LEDB = 1;
- 162   1              LEDC = 1;
- 163   1              LEDD = 1;
- 164   1              LEDE = 0;
- 165   1              LEDF = 0;
- 166   1              LEDG = 1;
- 167   1      }
- 168          
- 169          void number4(void) {
- 170   1              LEDA = 0;
- 171   1              LEDB = 1;
- 172   1              LEDC = 1;
- 173   1              LEDD = 0;
- 174   1              LEDE = 0;
- 175   1              LEDF = 1;
-C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/05/2018 14:42:46 PAGE 4   
+ 113   3                              LED0 = 1;
+ 114   3                              pressValid = 1;
+ 115   3                              pressCount = 0;
+ 116   3                      } else if (CSLIB_isSensorDebounceActive(1) && pressValid == 0) {
+ 117   3                              numberCount--;
+ 118   3      
+ 119   3                              if (numberCount < 0) {
+ 120   4                                      numberCount = 0;
+ 121   4                              }
+ 122   3      
+ 123   3                              LED0 = 1;
+ 124   3                              pressValid = 1;
+ 125   3                              pressCount = 0;
+ 126   3                      } else {
+ 127   3                              LED0 = 0;
+ 128   3                              pressCount++;
+ 129   3      
+ 130   3                              if (pressCount > touchCounter) {
+ 131   4                                      pressCount = 0;
+ 132   4                                      pressValid = 0;
+ 133   4                              }
+ 134   3                      }
+ 135   2                      //numberCount = 9;
+ 136   2                      //numberDisplay(numberCount);
+ 137   2                      numberProcess(numberCount);
+ 138   2      
+ 139   2              }
+ 140   1      }
+ 141          
+ 142          void number1(void) {
+ 143   1              LEDA = 0;
+ 144   1              LEDB = 1;
+ 145   1              LEDC = 1;
+ 146   1              LEDD = 0;
+ 147   1              LEDE = 0;
+ 148   1              LEDF = 0;
+ 149   1              LEDG = 0;
+ 150   1      }
+ 151          
+ 152          void number2(void) {
+ 153   1              LEDA = 1;
+ 154   1              LEDB = 1;
+ 155   1              LEDC = 0;
+ 156   1              LEDD = 1;
+ 157   1              LEDE = 1;
+ 158   1              LEDF = 0;
+ 159   1              LEDG = 1;
+ 160   1      }
+ 161          
+ 162          void number3(void) {
+ 163   1              LEDA = 1;
+ 164   1              LEDB = 1;
+ 165   1              LEDC = 1;
+ 166   1              LEDD = 1;
+ 167   1              LEDE = 0;
+ 168   1              LEDF = 0;
+ 169   1              LEDG = 1;
+ 170   1      }
+ 171          
+ 172          void number4(void) {
+ 173   1              LEDA = 0;
+ 174   1              LEDB = 1;
+ 175   1              LEDC = 1;
+C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/08/2018 10:55:39 PAGE 4   
 
- 176   1              LEDG = 1;
- 177   1      }
- 178          
- 179          void number5(void) {
- 180   1              LEDA = 1;
- 181   1              LEDB = 0;
- 182   1              LEDC = 1;
- 183   1              LEDD = 1;
- 184   1              LEDE = 0;
- 185   1              LEDF = 1;
- 186   1              LEDG = 1;
- 187   1      }
- 188          
- 189          void number6(void) {
- 190   1              LEDA = 1;
- 191   1              LEDB = 0;
- 192   1              LEDC = 1;
- 193   1              LEDD = 1;
- 194   1              LEDE = 1;
- 195   1              LEDF = 1;
- 196   1              LEDG = 1;
- 197   1      }
- 198          
- 199          void number7(void) {
- 200   1              LEDA = 1;
- 201   1              LEDB = 1;
- 202   1              LEDC = 1;
- 203   1              LEDD = 0;
- 204   1              LEDE = 0;
- 205   1              LEDF = 0;
- 206   1              LEDG = 0;
- 207   1      }
- 208          
- 209          void number8(void) {
- 210   1              LEDA = 1;
- 211   1              LEDB = 1;
- 212   1              LEDC = 1;
- 213   1              LEDD = 1;
- 214   1              LEDE = 1;
- 215   1              LEDF = 1;
- 216   1              LEDG = 1;
- 217   1      }
- 218          
- 219          void number9(void) {
- 220   1              LEDA = 1;
- 221   1              LEDB = 1;
- 222   1              LEDC = 1;
- 223   1              LEDD = 1;
- 224   1              LEDE = 0;
- 225   1              LEDF = 1;
- 226   1              LEDG = 1;
- 227   1      }
- 228          
- 229          void number0(void) {
- 230   1              LEDA = 1;
- 231   1              LEDB = 1;
- 232   1              LEDC = 1;
- 233   1              LEDD = 1;
- 234   1              LEDE = 1;
- 235   1              LEDF = 1;
- 236   1              LEDG = 0;
- 237   1      }
- 238          
-C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/05/2018 14:42:46 PAGE 5   
+ 176   1              LEDD = 0;
+ 177   1              LEDE = 0;
+ 178   1              LEDF = 1;
+ 179   1              LEDG = 1;
+ 180   1      }
+ 181          
+ 182          void number5(void) {
+ 183   1              LEDA = 1;
+ 184   1              LEDB = 0;
+ 185   1              LEDC = 1;
+ 186   1              LEDD = 1;
+ 187   1              LEDE = 0;
+ 188   1              LEDF = 1;
+ 189   1              LEDG = 1;
+ 190   1      }
+ 191          
+ 192          void number6(void) {
+ 193   1              LEDA = 1;
+ 194   1              LEDB = 0;
+ 195   1              LEDC = 1;
+ 196   1              LEDD = 1;
+ 197   1              LEDE = 1;
+ 198   1              LEDF = 1;
+ 199   1              LEDG = 1;
+ 200   1      }
+ 201          
+ 202          void number7(void) {
+ 203   1              LEDA = 1;
+ 204   1              LEDB = 1;
+ 205   1              LEDC = 1;
+ 206   1              LEDD = 0;
+ 207   1              LEDE = 0;
+ 208   1              LEDF = 0;
+ 209   1              LEDG = 0;
+ 210   1      }
+ 211          
+ 212          void number8(void) {
+ 213   1              LEDA = 1;
+ 214   1              LEDB = 1;
+ 215   1              LEDC = 1;
+ 216   1              LEDD = 1;
+ 217   1              LEDE = 1;
+ 218   1              LEDF = 1;
+ 219   1              LEDG = 1;
+ 220   1      }
+ 221          
+ 222          void number9(void) {
+ 223   1              LEDA = 1;
+ 224   1              LEDB = 1;
+ 225   1              LEDC = 1;
+ 226   1              LEDD = 1;
+ 227   1              LEDE = 0;
+ 228   1              LEDF = 1;
+ 229   1              LEDG = 1;
+ 230   1      }
+ 231          
+ 232          void number0(void) {
+ 233   1              LEDA = 1;
+ 234   1              LEDB = 1;
+ 235   1              LEDC = 1;
+ 236   1              LEDD = 1;
+ 237   1              LEDE = 1;
+ 238   1              LEDF = 1;
+C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/08/2018 10:55:39 PAGE 5   
 
- 239          void leftLED(void) {
- 240   1              LEDR = 0;
- 241   1              LEDL = 1;
- 242   1              /*PCA0CPH0 = 0x00;
- 243   1               PCA0CPH1 = 0xFF;*/
- 244   1      }
- 245          
- 246          void rightLED(void) {
- 247   1              LEDR = 1;
- 248   1              LEDL = 0;
- 249   1              /*PCA0CPH0 = 0xFF;
- 250   1               PCA0CPH1 = 0x00;*/
- 251   1      }
- 252          
- 253          void numberDisplay(uint8_t countIndex) {
- 254   1              switch (countIndex) {
- 255   2              case 1:
- 256   2                      if (displayToggle == 1) {
- 257   3                              number0();
- 258   3                              leftLED();
- 259   3                              displayChangeValid = 0;
- 260   3                      } else if (displayToggle == 0) {
- 261   3                              number1();
- 262   3                              rightLED();
- 263   3                              displayChangeValid = 0;
- 264   3                      }
- 265   2                      break;
- 266   2              case 2:
- 267   2                      if (displayToggle == 1) {
- 268   3                              number0();
- 269   3                              leftLED();
- 270   3                              displayChangeValid = 0;
- 271   3                      } else if (displayToggle == 0) {
- 272   3                              number2();
- 273   3                              rightLED();
- 274   3                              displayChangeValid = 0;
- 275   3                      }
- 276   2                      break;
- 277   2              case 3:
- 278   2                      if (displayToggle == 1) {
- 279   3                              number0();
- 280   3                              leftLED();
- 281   3                              displayChangeValid = 0;
- 282   3                      } else if (displayToggle == 0) {
- 283   3                              number3();
- 284   3                              rightLED();
- 285   3                              displayChangeValid = 0;
- 286   3                      }
- 287   2                      break;
- 288   2              case 4:
- 289   2                      if (displayToggle == 1) {
- 290   3                              number0();
- 291   3                              leftLED();
- 292   3                              displayChangeValid = 0;
- 293   3                      } else if (displayToggle == 0) {
- 294   3                              number4();
- 295   3                              rightLED();
- 296   3                              displayChangeValid = 0;
- 297   3                      }
- 298   2                      break;
- 299   2              case 5:
- 300   2                      if (displayToggle == 1) {
- 301   3                              number0();
-C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/05/2018 14:42:46 PAGE 6   
+ 239   1              LEDG = 0;
+ 240   1      }
+ 241          
+ 242          void leftLED(void) {
+ 243   1              LEDR = 0;
+ 244   1              LEDL = 1;
+ 245   1              /*PCA0CPH0 = 0x00;
+ 246   1               PCA0CPH1 = 0xFF;*/
+ 247   1      }
+ 248          
+ 249          void rightLED(void) {
+ 250   1              LEDR = 1;
+ 251   1              LEDL = 0;
+ 252   1              /*PCA0CPH0 = 0xFF;
+ 253   1               PCA0CPH1 = 0x00;*/
+ 254   1      }
+ 255          
+ 256          /*void numberDisplay(uint8_t countIndex) {
+ 257           switch (countIndex) {
+ 258           case 1:
+ 259           if (displayToggle == 1) {
+ 260           number0();
+ 261           leftLED();
+ 262           displayChangeValid = 0;
+ 263           } else if (displayToggle == 0) {
+ 264           number1();
+ 265           rightLED();
+ 266           displayChangeValid = 0;
+ 267           }
+ 268           break;
+ 269           case 2:
+ 270           if (displayToggle == 1) {
+ 271           number0();
+ 272           leftLED();
+ 273           displayChangeValid = 0;
+ 274           } else if (displayToggle == 0) {
+ 275           number2();
+ 276           rightLED();
+ 277           displayChangeValid = 0;
+ 278           }
+ 279           break;
+ 280           case 3:
+ 281           if (displayToggle == 1) {
+ 282           number0();
+ 283           leftLED();
+ 284           displayChangeValid = 0;
+ 285           } else if (displayToggle == 0) {
+ 286           number3();
+ 287           rightLED();
+ 288           displayChangeValid = 0;
+ 289           }
+ 290           break;
+ 291           case 4:
+ 292           if (displayToggle == 1) {
+ 293           number0();
+ 294           leftLED();
+ 295           displayChangeValid = 0;
+ 296           } else if (displayToggle == 0) {
+ 297           number4();
+ 298           rightLED();
+ 299           displayChangeValid = 0;
+ 300           }
+ 301           break;
+C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/08/2018 10:55:39 PAGE 6   
 
- 302   3                              leftLED();
- 303   3                              displayChangeValid = 0;
- 304   3                      } else if (displayToggle == 0) {
- 305   3                              number5();
- 306   3                              rightLED();
- 307   3                              displayChangeValid = 0;
- 308   3                      }
- 309   2                      break;
- 310   2              case 6:
- 311   2                      if (displayToggle == 1) {
- 312   3                              number0();
- 313   3                              leftLED();
- 314   3                              displayChangeValid = 0;
- 315   3                      } else if (displayToggle == 0) {
- 316   3                              number6();
- 317   3                              rightLED();
- 318   3                              displayChangeValid = 0;
- 319   3                      }
- 320   2                      break;
- 321   2              case 7:
- 322   2                      if (displayToggle == 1) {
- 323   3                              number0();
- 324   3                              leftLED();
- 325   3                              displayChangeValid = 0;
- 326   3                      } else if (displayToggle == 0) {
- 327   3                              number7();
- 328   3                              rightLED();
- 329   3                              displayChangeValid = 0;
- 330   3                      }
- 331   2                      break;
- 332   2              case 8:
- 333   2                      if (displayToggle == 1) {
- 334   3                              number0();
- 335   3                              leftLED();
- 336   3                              displayChangeValid = 0;
- 337   3                      } else if (displayToggle == 0) {
- 338   3                              number8();
- 339   3                              rightLED();
- 340   3                              displayChangeValid = 0;
- 341   3                      }
- 342   2                      break;
- 343   2              case 9:
- 344   2                      if (displayToggle == 1) {
- 345   3                              number0();
- 346   3                              leftLED();
- 347   3                              displayChangeValid = 0;
- 348   3                      } else if (displayToggle == 0) {
- 349   3                              number9();
- 350   3                              rightLED();
- 351   3                              displayChangeValid = 0;
- 352   3                      }
- 353   2                      break;
- 354   2              default:
- 355   2                      if (displayToggle == 1) {
- 356   3                              number0();
- 357   3                              leftLED();
- 358   3                              displayChangeValid = 0;
- 359   3                      } else if (displayToggle == 0) {
- 360   3                              number0();
- 361   3                              rightLED();
- 362   3                              displayChangeValid = 0;
- 363   3                      }
- 364   2              }
-C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/05/2018 14:42:46 PAGE 7   
+ 302           case 5:
+ 303           if (displayToggle == 1) {
+ 304           number0();
+ 305           leftLED();
+ 306           displayChangeValid = 0;
+ 307           } else if (displayToggle == 0) {
+ 308           number5();
+ 309           rightLED();
+ 310           displayChangeValid = 0;
+ 311           }
+ 312           break;
+ 313           case 6:
+ 314           if (displayToggle == 1) {
+ 315           number0();
+ 316           leftLED();
+ 317           displayChangeValid = 0;
+ 318           } else if (displayToggle == 0) {
+ 319           number6();
+ 320           rightLED();
+ 321           displayChangeValid = 0;
+ 322           }
+ 323           break;
+ 324           case 7:
+ 325           if (displayToggle == 1) {
+ 326           number0();
+ 327           leftLED();
+ 328           displayChangeValid = 0;
+ 329           } else if (displayToggle == 0) {
+ 330           number7();
+ 331           rightLED();
+ 332           displayChangeValid = 0;
+ 333           }
+ 334           break;
+ 335           case 8:
+ 336           if (displayToggle == 1) {
+ 337           number0();
+ 338           leftLED();
+ 339           displayChangeValid = 0;
+ 340           } else if (displayToggle == 0) {
+ 341           number8();
+ 342           rightLED();
+ 343           displayChangeValid = 0;
+ 344           }
+ 345           break;
+ 346           case 9:
+ 347           if (displayToggle == 1) {
+ 348           number0();
+ 349           leftLED();
+ 350           displayChangeValid = 0;
+ 351           } else if (displayToggle == 0) {
+ 352           number9();
+ 353           rightLED();
+ 354           displayChangeValid = 0;
+ 355           }
+ 356           break;
+ 357           default:
+ 358           if (displayToggle == 1) {
+ 359           number0();
+ 360           leftLED();
+ 361           displayChangeValid = 0;
+ 362           } else if (displayToggle == 0) {
+ 363           number0();
+ 364           rightLED();
+C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/08/2018 10:55:39 PAGE 7   
 
- 365   1      }
+ 365           displayChangeValid = 0;
+ 366           }
+ 367           }
+ 368           }*/
+ 369          
+ 370          void numberDisplayM(uint8_t countIndex, uint8_t direction) {
+ 371   1              switch (countIndex) {
+ 372   2              case 1:
+ 373   2                      number1();
+ 374   2                      if (direction == 1) {
+ 375   3                              leftLED();
+ 376   3                              displayChangeValid = 0;
+ 377   3                      } else if (direction == 0) {
+ 378   3                              rightLED();
+ 379   3                              displayChangeValid = 0;
+ 380   3                      }
+ 381   2                      break;
+ 382   2              case 2:
+ 383   2                      number2();
+ 384   2                      if (direction == 1) {
+ 385   3                              leftLED();
+ 386   3                              displayChangeValid = 0;
+ 387   3                      } else if (direction == 0) {
+ 388   3                              rightLED();
+ 389   3                              displayChangeValid = 0;
+ 390   3                      }
+ 391   2                      break;
+ 392   2              case 3:
+ 393   2                      number3();
+ 394   2                      if (direction == 1) {
+ 395   3                              leftLED();
+ 396   3                              displayChangeValid = 0;
+ 397   3                      } else if (direction == 0) {
+ 398   3                              rightLED();
+ 399   3                              displayChangeValid = 0;
+ 400   3                      }
+ 401   2                      break;
+ 402   2              case 4:
+ 403   2                      number4();
+ 404   2                      if (direction == 1) {
+ 405   3                              leftLED();
+ 406   3                              displayChangeValid = 0;
+ 407   3                      } else if (direction == 0) {
+ 408   3                              rightLED();
+ 409   3                              displayChangeValid = 0;
+ 410   3                      }
+ 411   2                      break;
+ 412   2              case 5:
+ 413   2                      number5();
+ 414   2                      if (direction == 1) {
+ 415   3                              leftLED();
+ 416   3                              displayChangeValid = 0;
+ 417   3                      } else if (direction == 0) {
+ 418   3                              rightLED();
+ 419   3                              displayChangeValid = 0;
+ 420   3                      }
+ 421   2                      break;
+ 422   2              case 6:
+ 423   2                      number6();
+ 424   2                      if (direction == 1) {
+ 425   3                              leftLED();
+ 426   3                              displayChangeValid = 0;
+ 427   3                      } else if (direction == 0) {
+C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/08/2018 10:55:39 PAGE 8   
+
+ 428   3                              rightLED();
+ 429   3                              displayChangeValid = 0;
+ 430   3                      }
+ 431   2                      break;
+ 432   2              case 7:
+ 433   2                      number7();
+ 434   2                      if (direction == 1) {
+ 435   3                              leftLED();
+ 436   3                              displayChangeValid = 0;
+ 437   3                      } else if (direction == 0) {
+ 438   3                              rightLED();
+ 439   3                              displayChangeValid = 0;
+ 440   3                      }
+ 441   2                      break;
+ 442   2              case 8:
+ 443   2                      number8();
+ 444   2                      if (direction == 1) {
+ 445   3                              leftLED();
+ 446   3                              displayChangeValid = 0;
+ 447   3                      } else if (direction == 0) {
+ 448   3                              rightLED();
+ 449   3                              displayChangeValid = 0;
+ 450   3                      }
+ 451   2                      break;
+ 452   2              case 9:
+ 453   2                      number9();
+ 454   2                      if (direction == 1) {
+ 455   3                              leftLED();
+ 456   3                              displayChangeValid = 0;
+ 457   3                      } else if (direction == 0) {
+ 458   3                              rightLED();
+ 459   3                              displayChangeValid = 0;
+ 460   3                      }
+ 461   2                      break;
+ 462   2              default:
+ 463   2                      number0();
+ 464   2                      if (direction == 1) {
+ 465   3                              leftLED();
+ 466   3                              displayChangeValid = 0;
+ 467   3                      } else if (direction == 0) {
+ 468   3                              rightLED();
+ 469   3                              displayChangeValid = 0;
+ 470   3                      }
+ 471   2              }
+ 472   1      }
+ 473          
+ 474          void numberProcess(int number) {
+ 475   1              int numH;
+ 476   1              int numL;
+ 477   1      
+ 478   1              numL = number % 10;
+ 479   1              numH = (number / 10);
+ 480   1      
+ 481   1              if (displayToggle == 1) {
+ 482   2                      numberDisplayM(numH, 1);
+ 483   2              } else if (displayToggle == 0) {
+ 484   2                      numberDisplayM(numL, 0);
+ 485   2              }
+ 486   1      }
+ 487          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    392    ----
+C51 COMPILER V9.53.0.0   LED_TEST_7SEG_MAIN                                                01/08/2018 10:55:39 PAGE 9   
+
+   CODE SIZE        =    534    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       4
+   DATA SIZE        =   ----       6
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      2       1
    EDATA SIZE       =   ----    ----
